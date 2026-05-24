@@ -7,7 +7,7 @@
   ],
   "key": {
     "R": {
-      "item": "repelreforged:repel_block_1"
+      "item": "repelreforged:super_repel"
     },
     "D": {
       "item": "minecraft:diamond"
@@ -20,6 +20,6 @@
     }
   },
   "result": {
-    "id": "repelreforged:repel_block_2"
+    "id": "repelreforged:max_repel"
   }
 }

@@ -1,10 +1,10 @@
 {
-  "block.repelreforged.repel_block": "Repel",
-  "block.repelreforged.repel_block_1": "Super Repel",
-  "block.repelreforged.repel_block_2": "Max Repel",
+  "block.repelreforged.repel": "Repel",
+  "block.repelreforged.super_repel": "Super Repel",
+  "block.repelreforged.max_repel": "Max Repel",
   "message.repelreforged.repel_tooltip": "Prevents Pokémon spawns in a %s blocks. %s",
   "message.repelreforged.in_chunk": "(%sx%s chunks)",
   "message.repelreforged.repel_right_click_tooltip": "Right click in the air to check if any Repels are nearby",
   "message.repelreforged.nearby_message": "There's already a Repel nearby",
-  "message.repelreforged.not_found_message": "No Reples found nearby"
+  "message.repelreforged.not_found_message": "No Repels found nearby"
 }

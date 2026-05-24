@@ -7,7 +7,7 @@
   ],
   "key": {
     "R": {
-      "item": "repelreforged:repel_block"
+      "item": "repelreforged:repel"
     },
     "G": {
       "item": "minecraft:gold_ingot"
@@ -17,6 +17,6 @@
     }
   },
   "result": {
-    "id": "repelreforged:repel_block_1"
+    "id": "repelreforged:super_repel"
   }
 }

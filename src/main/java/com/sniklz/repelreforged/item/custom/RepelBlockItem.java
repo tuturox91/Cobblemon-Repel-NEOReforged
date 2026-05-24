@@ -1,89 +1,57 @@
 package com.sniklz.repelreforged.item.custom;
 
-import com.sniklz.repelreforged.Config;
-import com.sniklz.repelreforged.RepelReforged;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 
-public class RepelBlockItem extends BlockItem {
+import com.sniklz.repelreforged.RepelReforged;
 
+public class RepelBlockItem extends BlockItem {
+    @SuppressWarnings("unused")
+    private final String repelType;
+    public static int RANGE;
     private final int BlockLevel;
+    public static HashMap<String, Integer> MULTIPLIERS = new HashMap<>();
 
     public RepelBlockItem(Block block, Properties properties, int blockLevel) {
         super(block, properties);
         this.BlockLevel = blockLevel;
+        switch (blockLevel) {
+            case 1: this.repelType = "repel"; break;
+            case 2: this.repelType = "super_repel"; break;
+            case 3: this.repelType = "max_repel"; break;
+            default: this.repelType = "repel";
+        }
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context,
-                                List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        // 1. Get the level from the context safely
+        Level level = context.level();
+        if (level == null) return; // Tooltip might be requested where level isn't available
 
-        int blockRange = 1;
-        switch (BlockLevel) {
-            case 1: blockRange = Config.REPEL_RANGE_1.get(); break;
-            case 2: blockRange = Config.REPEL_RANGE_2.get(); break;
-            case 3: blockRange = Config.REPEL_RANGE_3.get(); break;
+        // 2. Fetch the values directly from the source of truth
+        int baseRange = level.getGameRules().getInt(RepelReforged.REPEL_RANGE);
+        
+        int multiplier = switch (this.BlockLevel) {
+            case 2 -> level.getGameRules().getInt(RepelReforged.SUPER_REPEL_RANGE_MULTIPLIER);
+            case 3 -> level.getGameRules().getInt(RepelReforged.MAX_REPEL_RANGE_MULTIPLIER);
+            default -> 1;
+        };
+
+        int totalRange = baseRange * multiplier;
+        
+        if (totalRange > 0) {
+            Component rangeText = Component.literal(String.valueOf(totalRange)).withStyle(ChatFormatting.LIGHT_PURPLE);
+            tooltip.add(Component.translatable("message.repelreforged.repel_tooltip", rangeText).withStyle(ChatFormatting.GRAY));
         }
-
-        MutableComponent coloredRange = Component.literal(String.valueOf(blockRange)).withColor(Color.magenta.getRGB());
-        MutableComponent chunkCounterComponent;
-        int chunkCounter;
-        if(blockRange > 16) {
-            chunkCounter = (int)Math.floor((double) blockRange / 16); //16 blocks in chunk
-            chunkCounterComponent = Component.translatable(
-                    "message.repelreforged.in_chunk", chunkCounter, chunkCounter).withColor(Color.magenta.getRGB());
-        } else {
-            chunkCounterComponent = Component.literal("");
-        }
-
-        tooltipComponents.add(Component.translatable(
-                "message.repelreforged.repel_tooltip", coloredRange, chunkCounterComponent).withColor(Color.gray.getRGB()));
-        tooltipComponents.add(Component.translatable(
-                "message.repelreforged.repel_right_click_tooltip").withColor(Color.gray.getRGB()));
-    }
-
-    @Override
-    public InteractionResult place(BlockPlaceContext context) {
-        Player player = context.getPlayer();
-
-        if(!context.getLevel().isClientSide) {
-            if (RepelReforged.isRepelNearby((ServerLevel) context.getLevel(), context.getClickedPos())) {
-                player.displayClientMessage(Component.translatable(
-                        "message.repelreforged.nearby_message").withColor(0xFF0000), true);
-            } else {
-                player.displayClientMessage(Component.translatable(
-                        "message.repelreforged.not_found_message"), true);
-            }
-        }
-        return super.place(context);
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        ItemStack activeItem = player.getItemInHand(usedHand);
-
-        if(level.isClientSide) return InteractionResultHolder.pass(activeItem);
-        if (RepelReforged.isRepelNearby((ServerLevel) level, player.getOnPos()))
-            player.sendSystemMessage(Component.translatable(
-                    "message.repelreforged.nearby_message"));
-        else
-            player.sendSystemMessage(Component.translatable(
-                    "message.repelreforged.not_found_message"));
-
-        return InteractionResultHolder.success(activeItem);
+        tooltip.add(Component.translatable("message.repelreforged.repel_right_click_tooltip").withStyle(ChatFormatting.GRAY));
     }
 }

@@ -143,9 +143,8 @@ dependencies {
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
 
-    implementation "com.cobblemon:neoforge:1.6.1+1.21.1"
+    implementation "com.cobblemon:neoforge:1.7.0+1.21.1"
     implementation "thedarkcolour:kotlinforforge-neoforge:5.3.0"
-    implementation "maven.modrinth:cobblemon-spawn-notification:${cobblemon_spawn_notification_version}"
     // Example mod dependency using a file as dependency
     // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
 

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "repelreforged:block/repel" },
+    "facing=south": { "model": "repelreforged:block/repel", "y": 180 },
+    "facing=west":  { "model": "repelreforged:block/repel", "y": 270 },
+    "facing=east":  { "model": "repelreforged:block/repel", "y": 90 }
+  }
+}

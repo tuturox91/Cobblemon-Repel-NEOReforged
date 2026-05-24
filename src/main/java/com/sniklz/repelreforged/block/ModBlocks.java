@@ -6,7 +6,6 @@ import com.sniklz.repelreforged.item.ModItems;
 import com.sniklz.repelreforged.item.custom.RepelBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
@@ -19,11 +18,11 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(RepelReforged.MODID);
 
     public static final DeferredBlock<Block> REPEL_BLOCK =
-            registerBlock("repel_block", () -> new RepelBlock(BlockBehaviour.Properties.of().strength(0.3f).sound(SoundType.METAL), 1), 1); // <- dont beat me for this cringe
+            registerBlock("repel", () -> new RepelBlock(BlockBehaviour.Properties.of().strength(0.3f).sound(SoundType.METAL), 1), 1); // <- dont beat me for this cringe
     public static final DeferredBlock<Block> REPEL_BLOCK_1 =
-            registerBlock("repel_block_1", () -> new RepelBlock(BlockBehaviour.Properties.of().strength(0.3f).sound(SoundType.METAL), 2),2);
+            registerBlock("super_repel", () -> new RepelBlock(BlockBehaviour.Properties.of().strength(0.3f).sound(SoundType.METAL), 2),2);
     public static final DeferredBlock<Block> REPEL_BLOCK_2 =
-            registerBlock("repel_block_2", () -> new RepelBlock(BlockBehaviour.Properties.of().strength(0.3f).sound(SoundType.METAL), 3),3);
+            registerBlock("max_repel", () -> new RepelBlock(BlockBehaviour.Properties.of().strength(0.3f).sound(SoundType.METAL), 3),3);
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block, int blockLevel)  {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);

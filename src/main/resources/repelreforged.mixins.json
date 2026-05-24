@@ -3,8 +3,7 @@
   "package": "com.sniklz.repelreforged.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-      "BroadcastSpawnMixin",
-      "PlayShinySoundMixin"
+      "ServerLevelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
